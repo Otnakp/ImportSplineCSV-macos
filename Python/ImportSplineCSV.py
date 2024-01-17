@@ -21,27 +21,19 @@ def main():
         dlg.filter = 'Comma Separated Values (*.csv);;All Files (*.*)'
         if dlg.showOpen() != adsk.core.DialogResults.DialogOK :
             return
-        
+
         filename = dlg.filename
-        f = open(filename, 'r')
-        points = adsk.core.ObjectCollection.create()
-        line = f.readline()
-        data = []
-        while line:
-            pntStrArr = line.split(',')
-            for pntStr in pntStrArr:
-                data.append( float(pntStr))
-        
-            if len(data) >= 3 :
-                point = adsk.core.Point3D.create(data[0], data[1], data[2])
-                points.add(point)
-            line = f.readline()
-            data.clear()            
-        f.close()        
+        # Try opening the file with a different encoding
+        with open(filename, 'r', encoding='ISO-8859-1') as f:
+            points = adsk.core.ObjectCollection.create()
+            for line in f:
+                pntStrArr = line.strip().split(',')
+                if len(pntStrArr) >= 3:
+                    points.add(adsk.core.Point3D.create(float(pntStrArr[0]), float(pntStrArr[1]), float(pntStrArr[2])))       
         root = design.rootComponent;
         sketch = root.sketches.add(root.xYConstructionPlane);
         sketch.sketchCurves.sketchFittedSplines.add(points);     
-    except:
+    except Exception as e:
         if ui:
-            ui.messageBox('Failed:\n{}'.format(traceback.format_exc()))
+            ui.messageBox(f'Failed:\n{traceback.format_exc()}')
 main()
