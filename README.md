@@ -1,5 +1,6 @@
 # ImportSplineCSV (Script, JavaScript/Python)
-Import spline from csv file - available in both JavaScript and Python
+Import spline from csv file - available in both JavaScript and Python.
+This is a fork of the original one because it wasn't working on macos on my computer.
 
 ## Usage
 See [How to install sample Add-Ins and Scripts](https://rawgit.com/AutodeskFusion360/AutodeskFusion360.github.io/master/Installation.html)
